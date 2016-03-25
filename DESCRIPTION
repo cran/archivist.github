@@ -1,12 +1,12 @@
 Package: archivist.github
-Version: 0.1
+Version: 0.1.1
 Type: Package
 Title: Tools for Archiving, Managing and Sharing R Objects via GitHub
 Authors@R: c(
-    person("Przemyslaw", "Biecek", role = c("aut"),
-    email = "przemyslaw.biecek@gmail.com"),
     person("Marcin", "Kosinski", role = c("aut", "cre"),
-    email = "m.p.kosinski@gmail.com")
+    email = "m.p.kosinski@gmail.com"),
+    person("Przemyslaw", "Biecek", role = c("aut"),
+    email = "przemyslaw.biecek@gmail.com")
     )
 Description: The extension of the 'archivist' package integrating the archivist with GitHub via GitHub API, 'git2r' packages and 'httr' package. 
 Repository: CRAN
@@ -19,8 +19,8 @@ BugReports: https://github.com/MarcinKosinski/archivist.github/issues
 URL: http://marcinkosinski.github.io/archivist.github/
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-02-17 16:42:38 UTC; mkosinski
-Author: Przemyslaw Biecek [aut],
-  Marcin Kosinski [aut, cre]
+Packaged: 2016-03-25 15:58:10 UTC; mkosinski
+Author: Marcin Kosinski [aut, cre],
+  Przemyslaw Biecek [aut]
 Maintainer: Marcin Kosinski <m.p.kosinski@gmail.com>
-Date/Publication: 2016-02-17 22:10:36
+Date/Publication: 2016-03-25 20:00:51
