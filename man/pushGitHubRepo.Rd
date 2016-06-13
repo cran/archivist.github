@@ -2,6 +2,7 @@
 % Please edit documentation in R/push_pull_Repo.R
 \name{pushGitHubRepo}
 \alias{pullGitHubRepo}
+\alias{pullGithubRepo}
 \alias{pushGitHubRepo}
 \title{Push and Pull for Repository}
 \usage{
@@ -35,26 +36,22 @@ is \code{repoDir}. By default all uncommited artifacts and \code{backpack.db} wi
 \description{
 \code{pushGitHubRepo} adds files, commits them and pushes from Local \link{Repository} to synchronized GitHub one. 
 \code{pullGitHubRepo} pulls (\code{git pull}) changes from remote GitHub \code{Repository} to the correspoding Local one.
+
+This function is well explained on this \href{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github}{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github} blog post.
 }
 \details{
 To learn more about  \code{Archivist Integration With GitHub} visit \link{agithub}.
+To check the \code{status} (\code{git status}) of the Repository use \code{git2r::status(repository(repoDir))}. See examples.
 }
 \note{
-To check the \code{status} (\code{git status}) of the Repository use \code{git2r::status(repository(repoDir))}. See examples.
+Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
 }
 \examples{
 \dontrun{
 
-library(httr)
-myapp <- oauth_app("github",
-                   key = app_key,
-                   secret = app_secret)
-github_token <- oauth2.0_token(oauth_endpoints("github"),
-                                myapp,
-                                scope = c("public_repo",
-                                          "delete_repo"))
-aoptions("github_token", github_token)
-aoptions("name", user.name)
+authoriseGitHub(ClientID, ClientSecret) -> github_token
+# authoriseGitHub also does: aoptions("github_token", github_token)
+aoptions("user", user.name)
 aoptions("password", user.password)
 
 createGitHubRepo("Museum", default = TRUE) # here github_token is used
@@ -69,8 +66,17 @@ git2r::status(repository('Museum'))
 \author{
 Marcin Kosinski, \email{m.p.kosinski@gmail.com}
 }
+\references{
+More about \pkg{archivist.github} can be found on 
+\href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html}
+}
 \seealso{
-Other archivist: \code{\link{archivist-github-integration}},
-  \code{\link{archivist-package}}
+Other archivist.github: \code{\link{archive}},
+  \code{\link{archivist.github-package}},
+  \code{\link{authoriseGitHub}},
+  \code{\link{cloneGitHubRepo}},
+  \code{\link{createGitHubRepo}},
+  \code{\link{deleteGitHubRepo}}
 }
 

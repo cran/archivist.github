@@ -8,8 +8,11 @@
 #' \code{pushGitHubRepo} adds files, commits them and pushes from Local \link{Repository} to synchronized GitHub one. 
 #' \code{pullGitHubRepo} pulls (\code{git pull}) changes from remote GitHub \code{Repository} to the correspoding Local one.
 #' 
+#' This function is well explained on this \href{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github}{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github} blog post.
+#' 
 #' @details
 #' To learn more about  \code{Archivist Integration With GitHub} visit \link{agithub}.
+#' To check the \code{status} (\code{git status}) of the Repository use \code{git2r::status(repository(repoDir))}. See examples.
 #'  
 #' @param repoDir A character specifing the directory to Local \code{Repository} to/from which artifacts will be pulled/pushed to GitHub.
 #' @param commitMessage A character denoting a message added to the commit while performing push.
@@ -24,24 +27,25 @@
 #' @param ... Further arguments passed to \link[git2r]{push} or \link[git2r]{pull}.
 #' 
 #' 
-#' @note To check the \code{status} (\code{git status}) of the Repository use \code{git2r::status(repository(repoDir))}. See examples.
 #' 
 #' @author 
 #' Marcin Kosinski, \email{m.p.kosinski@@gmail.com}
 #' 
+#' @note 
+#' Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
+#' 
+#' @references 
+#' More about \pkg{archivist.github} can be found on 
+#' \href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+#' and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html} 
+#' 
+#' 
 #' @examples 
 #' \dontrun{
 #' 
-#' library(httr)
-#' myapp <- oauth_app("github",
-#'                    key = app_key,
-#'                    secret = app_secret)
-#' github_token <- oauth2.0_token(oauth_endpoints("github"),
-#'                                 myapp,
-#'                                 scope = c("public_repo",
-#'                                           "delete_repo"))
-#' aoptions("github_token", github_token)
-#' aoptions("name", user.name)
+#' authoriseGitHub(ClientID, ClientSecret) -> github_token
+#' # authoriseGitHub also does: aoptions("github_token", github_token)
+#' aoptions("user", user.name)
 #' aoptions("password", user.password)
 #' 
 #' createGitHubRepo("Museum", default = TRUE) # here github_token is used
@@ -52,7 +56,8 @@
 #' git2r::status(repository('Museum'))
 #' 
 #' }
-#' @family archivist
+#' @aliases pullGithubRepo
+#' @family archivist.github
 #' @rdname pushGitHubRepo
 #' @export
 pushGitHubRepo <- function(repoDir = aoptions('repoDir'), 
@@ -74,11 +79,10 @@ pushGitHubRepo <- function(repoDir = aoptions('repoDir'),
 	git2r::add(repo, files)
 	
 	if (is.null(commitMessage)){
-		new_commit <- git2r::commit(repo, "archivist: pushGitHubRepo")
-	} else {
-		new_commit <- git2r::commit(repo, commitMessage)
-	}
-	
+		commitMessage <- "archivist: pushGitHubRepo"
+	} 
+	new_commit <- git2r::commit(repo, commitMessage)
+
 	# authentication with GitHub
 	cred <- git2r::cred_user_pass(user,
 												 password)

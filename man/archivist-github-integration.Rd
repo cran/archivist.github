@@ -9,6 +9,9 @@
 Set of functions to integrate \link[archivist]{archivist-package} with
 GitHub API \href{https://developer.github.com/v3/}{https://developer.github.com/v3/}.
 
+To start working with \pkg{archivist.github} one should run \link{authoriseGitHub} to create an
+\code{OAuth} token which is required by every function in this package.
+
 It is possible to create new GitHub repository with an empty \pkg{archivist}-like \link{Repository}
 with \link{createGitHubRepo} function. 
 
@@ -22,14 +25,13 @@ with \link{createGitHubRepo} function.
 stored on a GitHub-Repository.
 
 \link{pushGitHubRepo} and \link{pullGitHubRepo} synchronize Local and GitHub (remote) Repository.
-
-More about \pkg{archivis.github} can be found on 
-\href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/}
 }
 \details{
 To use this set of functionalities, one firstly has to authorize himselft to the GitHub API.
 It can be done by creating \href{OAuth application on GitHub}{https://github.com/settings/developers}
-(register new application). When application is created, one will have to copy its \code{Client ID} and
+(register new application). If you do not know what should be included as \code{callback url}, you may 
+use \code{http://localhost:1410} for testing purposes.
+When application is created, one will have to copy its \code{Client ID} and
 \code{Client Secret} and authorize his github user with this application by running those commands:
  \itemize{
    \item \code{myapp <- oauth_app("github", key = Client_ID, secret = Client_Secret)},
@@ -51,19 +53,14 @@ and \code{aoptions("user.password", user.password)}.
 Note that global configuration of the \code{git config} is used for initial commit.
 One can later specify local configuration for the repository with \link[git2r]{config}, e.g
 \code{config(repoName, user.name = "Alice", user.email = "mail_at_gmail.com")}.
+
+Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
 }
 \examples{
 \dontrun{
-library(httr)
-myapp <- oauth_app("github",
-                   key = app_key,
-                   secret = app_secret)
-github_token <- oauth2.0_token(oauth_endpoints("github"),
-                                myapp,
-                                scope = c("public_repo",
-                                          "delete_repo"))
-aoptions("github_token", github_token)
-aoptions("name", user.name)
+authoriseGitHub(ClientID, ClientSecret) -> github_token
+# authoriseGitHub also does: aoptions("github_token", github_token)
+aoptions("user", user.name)
 aoptions("password", user.password)
 
 ## here github_token is used
@@ -78,8 +75,12 @@ repoDescription = "My models and stuff")
 \author{
 Marcin Kosinski, \email{m.p.kosinski@gmail.com}
 }
+\references{
+More about \pkg{archivist.github} can be found on 
+\href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html}
+}
 \seealso{
-Other archivist: \code{\link{archivist-package}},
-  \code{\link{pushGitHubRepo}}
+Other archivist: \code{\link{addHooksToPrintGitHub}}
 }
 

@@ -35,31 +35,25 @@ If it's in main directory, then specify to \code{NULL} (default).}
 \description{
 \code{deleteGitHubRepo} can delete whole GitHub-Repository or only archivist-like \link{Repository}
 stored on a GitHub-Repository (then it requires more parameters to be specified).
+
+This function is well explained on this \href{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github}{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github} blog post.
 }
 \details{
 To learn more about  \code{Archivist Integration With GitHub} visit \link{agithub}.
-
 To delete GitHub Repository you
 need to have \code{delete_repo} scope set - see examples.
+}
+\note{
+Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
 }
 \examples{
 \dontrun{
 
-########################
-#### GitHub version ####
-########################
-
-library(httr)
-myapp <- oauth_app("github",
-                   key = app_key,
-                   secret = app_secret)
-github_token <- oauth2.0_token(oauth_endpoints("github"),
-                                myapp,
-                                scope = c("public_repo",
-                                          "delete_repo"))
-aoptions("github_token", github_token)
-aoptions("user", user)
-aoptions("password", password)
+authoriseGitHub(ClientID, ClientSecret, 
+                scope = c("public_repo", "delete_repo")) -> github_token
+# authoriseGitHub also does: aoptions("github_token", github_token)
+aoptions("user", user.name)
+aoptions("password", user.password)
 
 createGitHubRepo("Museum")
 deleteGitHubRepo(repo = "Museum", deleteRoot = TRUE, response = TRUE)
@@ -70,9 +64,17 @@ deleteGitHubRepo(repo = "Museum", deleteRoot = TRUE, response = TRUE)
 \author{
 Marcin Kosinski, \email{m.p.kosinski@gmail.com}
 }
+\references{
+More about \pkg{archivist.github} can be found on 
+\href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html}
+}
 \seealso{
 Other archivist.github: \code{\link{archive}},
+  \code{\link{archivist.github-package}},
+  \code{\link{authoriseGitHub}},
   \code{\link{cloneGitHubRepo}},
-  \code{\link{createGitHubRepo}}
+  \code{\link{createGitHubRepo}},
+  \code{\link{pushGitHubRepo}}
 }
 

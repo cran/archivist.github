@@ -9,7 +9,7 @@ createGitHubRepo(repo, github_token = aoptions("github_token"),
   password = aoptions("password"),
   repoDescription = aoptions("repoDescription"),
   readmeDescription = aoptions("readmeDescription"),
-  response = aoptions("response"), default = FALSE, ...)
+  response = aoptions("response"), default = FALSE, verbose = FALSE, ...)
 }
 \arguments{
 \item{repo}{While working with a Github repository. A character denoting new GitHub repository name. White spaces will be substitued with a dash.}
@@ -36,12 +36,16 @@ Can be set globally with \code{aoptions("readmeDescription", readmeDescription)}
 
 \item{default}{If \code{default = TRUE} then \code{repoDir} (\code{repo}) is set as default local repository. Also the \code{user} is set as default GitHub user.}
 
+\item{verbose}{A logical value. If TRUE then additional messages will be printed out.}
+
 \item{...}{further arguments passed to \link{createLocalRepo} such as \code{force}.}
 }
 \description{
 \code{createGitHubRepo} is a GitHub version of \link{createLocalRepo} and creates a new GitHub repository 
 with an empty \pkg{archivist}-like \link{Repository}. It also creates a Local \code{Repository} which is git-synchronized with
-new GitHub repository.
+new GitHub repository. 
+
+This function is well explained on this \href{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github}{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github} blog post.
 }
 \details{
 To learn more about  \code{Archivist Integration With GitHub} visit \link{agithub}.
@@ -68,20 +72,16 @@ artifacts will be archived.
 After every \code{saveToLocalRepo} call the database is refreshed. As a result, the artifact is available 
 immediately in \code{backpack.db} database for other collaborators.
 }
+\note{
+Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
+}
 \examples{
 \dontrun{
-## GitHub version
-
-library(httr)
-myapp <- oauth_app("github",
-                   key = app_key,
-                   secret = app_secret)
-github_token <- oauth2.0_token(oauth_endpoints("github"),
-                                myapp,
-                                scope = "public_repo")
-aoptions("github_token", github_token)
-aoptions("user", user)
-aoptions("password", password)
+# empty GitHub Repository creation
+authoriseGitHub(ClientID, ClientSecret) -> github_token
+# authoriseGitHub also does: aoptions("github_token", github_token)
+aoptions("user", user.name)
+aoptions("password", user.password)
 
 createGitHubRepo("Museum")
 createGitHubRepo("Museum-Extras", response = TRUE)
@@ -89,24 +89,8 @@ createGitHubRepo("Gallery", readmeDescription = NULL)
 createGitHubRepo("Landfill", 
 repoDescription = "My models and stuff") 
 createGitHubRepo("MuseumYYYY", repoDir = "Museum_YY")
-        
-        
-        
-# empty GitHub Repository creation
-
-library(httr)
-myapp <- oauth_app("github",
-                   key = app_key,
-                   secret = app_secret)
-github_token <- oauth2.0_token(oauth_endpoints("github"),
-                               myapp,
-                               scope = "public_repo")
-# setting options                              
-aoptions("github_token", github_token)
-aoptions("user", user)
-aoptions("password", password)
-
 createGitHubRepo("archive-test4", default = TRUE)
+
 ## artifact's archiving
 przyklad <- 1:100
 
@@ -134,9 +118,17 @@ showRemoteRepo()
 \author{
 Marcin Kosinski, \email{m.p.kosinski@gmail.com}
 }
+\references{
+More about \pkg{archivist.github} can be found on 
+\href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html}
+}
 \seealso{
 Other archivist.github: \code{\link{archive}},
+  \code{\link{archivist.github-package}},
+  \code{\link{authoriseGitHub}},
   \code{\link{cloneGitHubRepo}},
-  \code{\link{deleteGitHubRepo}}
+  \code{\link{deleteGitHubRepo}},
+  \code{\link{pushGitHubRepo}}
 }
 

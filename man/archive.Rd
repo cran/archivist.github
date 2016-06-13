@@ -7,7 +7,7 @@
 archive(artifact, commitMessage = aoptions("commitMessage"),
   repo = aoptions("repo"), user = aoptions("user"),
   password = aoptions("password"), alink = aoptions("alink"),
-  artifactName = deparse(substitute(artifact)), ...)
+  artifactName = deparse(substitute(artifact)), verbose = FALSE, ...)
 }
 \arguments{
 \item{artifact}{An artifact to be archived on Local and Github \link{Repository}.}
@@ -28,6 +28,8 @@ you should specify them with \link{aoptions} in this case.}
 
 \item{artifactName}{The name of the artifact with which it should be archived. If \code{NULL} then object's MD5 hash will be used instead.}
 
+\item{verbose}{A logical value. If TRUE then additional messages will be printed out.}
+
 \item{...}{Further arguments passed to \link{saveToLocalRepo} function.}
 }
 \description{
@@ -36,28 +38,22 @@ artifacts to the GitHub \code{Repository} with which the local \code{Repository}
 (via \link{createGitHubRepo} or \link{cloneGitHubRepo}). Function stores artifacts on the same
 way as \link{saveToLocalRepo} function. 
 
-More about \pkg{archivis.github} can be found on 
-\href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/}
+This function is well explained on this \href{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github}{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github} blog post.
 }
 \details{
 To learn more about  \code{Archivist Integration With GitHub} visit \link{agithub}.
+}
+\note{
+Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
 }
 \examples{
 \dontrun{
 
 # empty GitHub Repository creation
-
-library(httr)
-myapp <- oauth_app("github",
-                   key = app_key,
-                   secret = app_secret)
-github_token <- oauth2.0_token(oauth_endpoints("github"),
-                               myapp,
-                               scope = "public_repo")
-# setting options                              
-aoptions("github_token", github_token)
-aoptions("user", user)
-aoptions("password", user)
+authoriseGitHub(ClientID, ClientSecret) -> github_token
+# authoriseGitHub also does: aoptions("github_token", github_token)
+aoptions("user", user.name)
+aoptions("password", user.password)
 
 createGitHubRepo("archive-test4", default = TRUE)
 ## artifact's archiving
@@ -96,9 +92,17 @@ showRemoteRepo()
 \author{
 Marcin Kosinski, \email{m.p.kosinski@gmail.com}
 }
+\references{
+More about \pkg{archivist.github} can be found on 
+\href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html}
+}
 \seealso{
-Other archivist.github: \code{\link{cloneGitHubRepo}},
+Other archivist.github: \code{\link{archivist.github-package}},
+  \code{\link{authoriseGitHub}},
+  \code{\link{cloneGitHubRepo}},
   \code{\link{createGitHubRepo}},
-  \code{\link{deleteGitHubRepo}}
+  \code{\link{deleteGitHubRepo}},
+  \code{\link{pushGitHubRepo}}
 }
 

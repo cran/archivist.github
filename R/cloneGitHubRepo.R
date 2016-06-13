@@ -1,5 +1,5 @@
-##    archivist package for R
-##		archivist.github package for R
+##  archivist package for R
+##  archivist.github package for R
 ##
 #' @title Clone Github Repository
 #'
@@ -20,6 +20,13 @@
 #' @author 
 #' Marcin Kosinski, \email{m.p.kosinski@@gmail.com}
 #'
+#' @note 
+#' Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
+#' 
+#' @references 
+#' More about \pkg{archivist.github} can be found on 
+#' \href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+#' and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html} 
 #' 
 #' @examples 
 #' \dontrun{
@@ -29,18 +36,10 @@
 #' 
 #' 
 #' # empty Github Repository creation
-#' 
-#' library(httr)
-#' myapp <- oauth_app("github",
-#'                    key = app_key,
-#'                    secret = app_secret)
-#' github_token <- oauth2.0_token(oauth_endpoints("github"),
-#'                                myapp,
-#'                                scope = "public_repo")
-#' # setting options                              
-#' aoptions("github_token", github_token)
-#' aoptions("name", user_name)
-#' aoptions("password", user_password)
+#' authoriseGitHub(ClientID, ClientSecret) -> github_token
+#' # authoriseGitHub also does: aoptions("github_token", github_token)
+#' aoptions("user", user.name)
+#' aoptions("password", user.password)
 #' 
 #' createEmptyGithubRepo("archive-test4")
 #' setRemotebRepo(aoptions("name"), "archive-test4")
@@ -79,9 +78,10 @@ cloneGitHubRepo <- function(repoURL, repoDir = NULL, default = FALSE, ...){
 	stopifnot((is.character(repoDir) & length(repoDir) == 1) | is.null(repoDir))
 	stopifnot( is.logical( default ), length( default ) == 1 )
 	
+	repoURLsplitted <- strsplit(repoURL, "/")[[1]] 
+	
 	if (is.null(repoDir)) {
-		repoDir <-tail(strsplit(repoURL,
-														"/")[[1]],1)
+		repoDir <-tail(repoURLsplitted,1)
 	}
 	
 	if (!file.exists(repoDir)) {
@@ -92,10 +92,8 @@ cloneGitHubRepo <- function(repoURL, repoDir = NULL, default = FALSE, ...){
 	
 	if (default) {
 		archivist::aoptions('repoDir', repoDir)
-		archivist::aoptions('user', tail(strsplit(repoURL,
-																			 "/")[[1]],2)[1])
-		archivist::aoptions('repo',tail(strsplit(repoURL,
-																			 "/")[[1]],1))
+		archivist::aoptions('user', tail(repoURLsplitted,2)[1])
+		archivist::aoptions('repo', tail(repoURLsplitted,1))
 	}
 	return(repo2return)
 }

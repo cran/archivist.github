@@ -1,5 +1,5 @@
-##    archivist package for R
-##		archivist.github package for R
+##  archivist package for R
+##  archivist.github package for R
 ##
 #' @title Archive Artifact to Local and GitHub Repository
 #'
@@ -9,8 +9,12 @@
 #' (via \link{createGitHubRepo} or \link{cloneGitHubRepo}). Function stores artifacts on the same
 #' way as \link{saveToLocalRepo} function. 
 #' 
-#' More about \pkg{archivis.github} can be found on 
-#' \href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/}
+#' This function is well explained on this \href{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github}{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github} blog post.
+#' 
+#' @references 
+#' More about \pkg{archivist.github} can be found on 
+#' \href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+#' and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html}
 #' 
 #' @details
 #' To learn more about  \code{Archivist Integration With GitHub} visit \link{agithub}.
@@ -28,26 +32,23 @@
 #' 
 #' @param alink Logical. Whether the result should be put into \link{alink} function. If you would like to pass further arguments to \code{alink} then
 #' you should specify them with \link{aoptions} in this case.
+#' @param verbose A logical value. If TRUE then additional messages will be printed out.
 #' 
 #' @author 
 #' Marcin Kosinski, \email{m.p.kosinski@@gmail.com}
+#' 
+#' @note 
+#' Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
+#' 
 #' 
 #' @examples 
 #' \dontrun{
 #' 
 #' # empty GitHub Repository creation
-#' 
-#' library(httr)
-#' myapp <- oauth_app("github",
-#'                    key = app_key,
-#'                    secret = app_secret)
-#' github_token <- oauth2.0_token(oauth_endpoints("github"),
-#'                                myapp,
-#'                                scope = "public_repo")
-#' # setting options                              
-#' aoptions("github_token", github_token)
-#' aoptions("user", user)
-#' aoptions("password", user)
+#' authoriseGitHub(ClientID, ClientSecret) -> github_token
+#' # authoriseGitHub also does: aoptions("github_token", github_token)
+#' aoptions("user", user.name)
+#' aoptions("password", user.password)
 #' 
 #' createGitHubRepo("archive-test4", default = TRUE)
 #' ## artifact's archiving
@@ -92,6 +93,7 @@ archive <- function(artifact,
 										password = aoptions("password"),
 										alink = aoptions("alink"),
 										artifactName = deparse(substitute(artifact)),
+										verbose = FALSE,
 										...){
 	stopifnot(is.character(c(repo, user, password)))
 	stopifnot(is.null(commitMessage) | (length(commitMessage) == 1 & is.character(commitMessage)))
@@ -100,11 +102,13 @@ archive <- function(artifact,
 		
 	# archive Locally
 	# assign(x = artifactName, value = artifact)
+	if(verbose) cat(" - archive Locally\n")
 	archivist::saveToRepo(artifact = artifact, artifactName = artifactName, ...) -> md5hash
 	
 	# commit
 	# new rows in backpack.db
 	# and new files for artifact
+	if(verbose) cat(" - and new files for artifact\n")
 	repoName <- repo
 	repo <- git2r::repository(repo)
 	
@@ -114,22 +118,25 @@ archive <- function(artifact,
 										 		 							list.files(file.path(repoName, "gallery"))),
 										 		 value = TRUE)))
 	
+	if(verbose) cat(" - commit\n")
 	if (is.null(commitMessage)){
-		new_commit <- git2r::commit(repo, paste0("archivist: add ", md5hash))
-	} else {
-		new_commit <- git2r::commit(repo, commitMessage)
-	}
-	
+		commitMessage <- paste0("archivist: add ", md5hash)
+	} 
+	new_commit <- git2r::commit(repo, commitMessage)
+
 	# authentication with GitHub
 	cred <- cred_user_pass(user, password)
 	
 	# push to github
+	if(verbose) cat(" - push to github\n")
 	git2r::push(repo, refspec = "refs/heads/master", credentials = cred)
 	
+	
+	urh <- paste0(user,"/",repoName,"/",md5hash)
   if (alink) {
-		alink(paste0(user,"/",repoName,"/",md5hash))
+		alink(urh)
 	} else {
-		return(paste0(user,"/",repoName,"/",md5hash))
+		urh
 	}
 	
 }

@@ -7,8 +7,12 @@
 #' \code{deleteGitHubRepo} can delete whole GitHub-Repository or only archivist-like \link{Repository}
 #' stored on a GitHub-Repository (then it requires more parameters to be specified).
 #' 
+#' This function is well explained on this \href{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github}{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github} blog post.
+#' 
 #' @details
 #' To learn more about  \code{Archivist Integration With GitHub} visit \link{agithub}.
+#' To delete GitHub Repository you
+#' need to have \code{delete_repo} scope set - see examples.
 #'  
 #' @param deleteRoot A logical value that specifies if the repository root directory
 #' should be deleted for Local Repository or for GitHub whether to delete whole GitHub-Repository.
@@ -26,33 +30,27 @@
 #' @param password Only when \code{deleteRoot = FALSE}. While working with a Github repository. A character denoting GitHub user password. Can be set globally with \code{aoptions("password", password)}.
 #' See \link{archivist-github-integration}.
 #' 
-#' @details
 #' 
-#' To delete GitHub Repository you
-#' need to have \code{delete_repo} scope set - see examples.
-#' 
+#' @references 
+#' More about \pkg{archivist.github} can be found on 
+#' \href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+#' and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html}
 #' 
 #' @author 
 #' Marcin Kosinski, \email{m.p.kosinski@@gmail.com}
 #'
+#' @note 
+#' Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
+#' 
+#'
 #' @examples
 #' \dontrun{
 #' 
-#' ########################
-#' #### GitHub version ####
-#' ########################
-#' 
-#' library(httr)
-#' myapp <- oauth_app("github",
-#'                    key = app_key,
-#'                    secret = app_secret)
-#' github_token <- oauth2.0_token(oauth_endpoints("github"),
-#'                                 myapp,
-#'                                 scope = c("public_repo",
-#'                                           "delete_repo"))
-#' aoptions("github_token", github_token)
-#' aoptions("user", user)
-#' aoptions("password", password)
+#' authoriseGitHub(ClientID, ClientSecret, 
+#'                 scope = c("public_repo", "delete_repo")) -> github_token
+#' # authoriseGitHub also does: aoptions("github_token", github_token)
+#' aoptions("user", user.name)
+#' aoptions("password", user.password)
 #' 
 #' createGitHubRepo("Museum")
 #' deleteGitHubRepo(repo = "Museum", deleteRoot = TRUE, response = TRUE)
@@ -60,16 +58,16 @@
 #' }
 #' 
 #' @family archivist.github
-#' @rdname deleteRepo
+#' @rdname deleteGitHubRepo
 #' @export
 deleteGitHubRepo <- function(repo,
-														 github_token = aoptions("github_token"), 
-														 user = aoptions("user"),
-														 password = aoptions("password"),
-														 unset = FALSE, 
-														 deleteRoot = FALSE, 
-														 subdir = NULL, 
-														 response = aoptions("response")) {
+										 github_token = aoptions("github_token"), 
+										 user = aoptions("user"),
+										 password = aoptions("password"),
+										 unset = FALSE, 
+										 deleteRoot = FALSE, 
+										 subdir = NULL, 
+										 response = aoptions("response")) {
 	stopifnot(is.character(repo) & length(repo) ==1)
 	stopifnot(is.character(user) & length(user)==1)
 	

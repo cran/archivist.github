@@ -9,11 +9,16 @@
 #' with an empty \pkg{archivist}-like \link{Repository}. It also creates a Local \code{Repository} which is git-synchronized with
 #' new GitHub repository. 
 #' 
+#' This function is well explained on this \href{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github}{http://r-bloggers.com/r-hero-saves-backup-city-with-archivist-and-github} blog post.
+#' 
+#' @references 
+#' More about \pkg{archivist.github} can be found on 
+#' \href{http://marcinkosinski.github.io/archivist.github/}{marcinkosinski.github.io/archivist.github/} 
+#' and about \pkg{archivist} in posts' history on \href{http://pbiecek.github.io/archivist/Posts.html}{http://pbiecek.github.io/archivist/Posts.html}
+#' 
 #' @details
 #' To learn more about  \code{Archivist Integration With GitHub} visit \link{agithub}.
 #' 
-#' 
-#' @details
 #' At least one Repository must be initialized before using other functions from the \pkg{archivist.github} package. 
 #' While working in groups, it is highly recommended to create a Repository on a shared Dropbox/GitHub folder.
 #' 
@@ -55,24 +60,22 @@
 #' Can be set globally with \code{aoptions("readmeDescription", readmeDescription)}. In order to omit 
 #' \code{README.md} file set \code{aoptions("readmeDescription", NULL)}.
 #' @param response A logical value. Should the GitHub API response be returned.
+#' @param verbose A logical value. If TRUE then additional messages will be printed out.
 #' 
 #' @author 
 #' Marcin Kosinski, \email{m.p.kosinski@@gmail.com}
 #'
+#' @note 
+#' Bug reports and feature requests can be sent to \href{https://github.com/MarcinKosinski/archivist.github/issues}{https://github.com/MarcinKosinski/archivist.github/issues}
+#' 
+#'
 #' @examples
 #' \dontrun{
-#' ## GitHub version
-#' 
-#' library(httr)
-#' myapp <- oauth_app("github",
-#'                    key = app_key,
-#'                    secret = app_secret)
-#' github_token <- oauth2.0_token(oauth_endpoints("github"),
-#'                                 myapp,
-#'                                 scope = "public_repo")
-#' aoptions("github_token", github_token)
-#' aoptions("user", user)
-#' aoptions("password", password)
+#' # empty GitHub Repository creation
+#' authoriseGitHub(ClientID, ClientSecret) -> github_token
+#' # authoriseGitHub also does: aoptions("github_token", github_token)
+#' aoptions("user", user.name)
+#' aoptions("password", user.password)
 #' 
 #' createGitHubRepo("Museum")
 #' createGitHubRepo("Museum-Extras", response = TRUE)
@@ -80,24 +83,8 @@
 #' createGitHubRepo("Landfill", 
 #' repoDescription = "My models and stuff") 
 #' createGitHubRepo("MuseumYYYY", repoDir = "Museum_YY")
-#'         
-#'         
-#'         
-#' # empty GitHub Repository creation
-#' 
-#' library(httr)
-#' myapp <- oauth_app("github",
-#'                    key = app_key,
-#'                    secret = app_secret)
-#' github_token <- oauth2.0_token(oauth_endpoints("github"),
-#'                                myapp,
-#'                                scope = "public_repo")
-#' # setting options                              
-#' aoptions("github_token", github_token)
-#' aoptions("user", user)
-#' aoptions("password", password)
-#' 
 #' createGitHubRepo("archive-test4", default = TRUE)
+#' 
 #' ## artifact's archiving
 #' przyklad <- 1:100
 #' 
@@ -122,19 +109,20 @@
 #' 
 #' }
 #' @family archivist.github
-#' @rdname createEmptyRepo
+#' @rdname createGitHubRepo
 #' @export
 createGitHubRepo <- function(repo,
-														 github_token = aoptions("github_token"), 
-														 user = aoptions("user"),
-														 repoDir = NULL,
-														 #user.email = aoptions("user.email"),
-														 password = aoptions("password"),
-														 repoDescription = aoptions("repoDescription"),
-														 readmeDescription = aoptions("readmeDescription"),
-														 response = aoptions("response"),
-														 default = FALSE,
-														 ...){
+										 github_token = aoptions("github_token"), 
+										 user = aoptions("user"),
+										 repoDir = NULL,
+										 #user.email = aoptions("user.email"),
+										 password = aoptions("password"),
+										 repoDescription = aoptions("repoDescription"),
+										 readmeDescription = aoptions("readmeDescription"),
+										 response = aoptions("response"),
+										 default = FALSE,
+										 verbose = FALSE, 
+										 ...){
 	stopifnot(is.character(repo) & length(repo) ==1)
 	stopifnot((is.character(repoDir) & length(repoDir) ==1) | (is.null(repoDir)))
 	stopifnot(is.character(repoDescription) & length(repoDescription) ==1)
@@ -158,6 +146,7 @@ createGitHubRepo <- function(repo,
 	
 	# httr imports are in archivist-package.R file
 	# creating an empty GitHub Repository
+	if(verbose) cat(" - creating an empty GitHub Repository\n")
 	httr::POST(url = "https://api.github.com/user/repos",
 			 encode = "json",
 			 body = list(
@@ -170,6 +159,7 @@ createGitHubRepo <- function(repo,
 	
 	# git2r imports are in the archivist-package.R
 	#path <- repoDir
+	if(verbose) cat(" - create directory for the repo\n")
 	dir.create(repoDir)
 	
 	if (!shortPath){
@@ -181,6 +171,7 @@ createGitHubRepo <- function(repo,
 	
 	# initialize local git repository
 	# git init
+	if(verbose) cat(" - initialize local git repository\n")
 	repoDir_git2r <- git2r::init(repoDir_path)
 	
 	## Create and configure a user
@@ -188,9 +179,11 @@ createGitHubRepo <- function(repo,
 	#git2r::config(repo, ...) # if about to use, the add to archivist-package.R
 	
 	# archivist-like Repository creation
+	if(verbose) cat(" - archivist-like Repository creation\n")
 	archivist::createLocalRepo(repoDir = repoDir_path, ...)
 	file.create(file.path(repoDir_path, "gallery", ".gitkeep"))
 	# git add
+	if(verbose) cat(" - git add\n")
 	if (!is.null(readmeDescription)){
 		file.create(file.path(repoDir_path, "README.md"))
 		writeLines(aoptions("readmeDescription"), file.path(repoDir_path, "README.md"))
@@ -200,10 +193,12 @@ createGitHubRepo <- function(repo,
 	}
 	
 	# git commit
+	if(verbose) cat(" - git commit\n")
 	new_commit <- git2r::commit(repoDir_git2r, "archivist Repository creation.")
 	
 	# association of the local and GitHub git repository
 	# git add remote
+	if(verbose) cat(" - git add remote\n")
 	git2r::remote_add(repoDir_git2r,
 						 #"upstream2",
 						 'origin',
@@ -211,10 +206,12 @@ createGitHubRepo <- function(repo,
 	
 	# GitHub authorization
 	# to perform pull and push operations
+	if(verbose) cat(" - to perform pull and push operations\n")
 	cred <- git2r::cred_user_pass(user,
 																password)
 	
 	# push archivist-like Repository to GitHub repository
+	if(verbose) cat(" - push archivist-like Repository to GitHub repository\n")
 	git2r::push(repoDir_git2r,
 			 #name = "upstream2",
 			 refspec = "refs/heads/master",
