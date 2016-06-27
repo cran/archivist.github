@@ -1,5 +1,5 @@
 Package: archivist.github
-Version: 0.2.0
+Version: 0.2.1
 Type: Package
 Title: Tools for Archiving, Managing and Sharing R Objects via GitHub
 Authors@R: c(
@@ -19,8 +19,8 @@ BugReports: https://github.com/MarcinKosinski/archivist.github/issues
 URL: http://marcinkosinski.github.io/archivist.github/
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-06-13 14:07:13 UTC; mkosinski
+Packaged: 2016-06-26 22:04:46 UTC; mkosinski
 Author: Marcin Kosinski [aut, cre],
   Przemyslaw Biecek [aut]
 Maintainer: Marcin Kosinski <m.p.kosinski@gmail.com>
-Date/Publication: 2016-06-13 17:32:54
+Date/Publication: 2016-06-27 06:59:56
