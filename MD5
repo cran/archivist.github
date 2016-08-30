@@ -1,7 +1,7 @@
-a4e299ab9dec2c17abe12d6492f52c4a *DESCRIPTION
+5ed638adac3f0af570705b6115edb836 *DESCRIPTION
 7af874860af2de359f3b10932c5f9052 *NAMESPACE
-a9b72611118d916be8ef5a124722878d *NEWS.md
-20b497fe373cb1a9dfa7022d70a015be *R/addHooksToPrintGitHub.R
+22fa263ae1f9faf46c08e49c951a6a8d *NEWS.md
+22ca1863127b0b8649e838e3ba6dafbc *R/addHooksToPrintGitHub.R
 e60cbbd64449bf5d548b3d3262fdf965 *R/agithub.R
 4fb8550c135529dd87ea1ab99fb16835 *R/archive.R
 fbbbf03c04f93fb2c6711f01476c66f2 *R/archivist.github-package.R
@@ -11,7 +11,11 @@ fbbbf03c04f93fb2c6711f01476c66f2 *R/archivist.github-package.R
 042723e66dd2cdb224456f79d0c7bf30 *R/deleteGitHubRepo.R
 7abb7961ba8d7a19ec913ff788c9402e *R/push_pull_Repo.R
 305cb0576faf3dcd2853a2ba15b768b8 *R/zzz.R
-3cf9cdf7b81839062a64f14b34cdec01 *README.md
+1c29e08e0be676e45a1f449ea7ced1c6 *README.md
+e4ad37c37175f7e556a0632ee64a30bc *build/vignette.rds
+f9435e18998a9bf9a9491365e6036dc4 *inst/doc/archivist_and_GitHub_integration.R
+602fd4c55800cced7a8c200881f4f918 *inst/doc/archivist_and_GitHub_integration.Rmd
+bdab4b636abe7585c03ac2f45e8275bd *inst/doc/archivist_and_GitHub_integration.html
 c9ac45bb8f32767a4b2d5fafbb85e5b4 *man/addHooksToPrintGitHub.Rd
 9a488273bd676d6e56fe796f177649b4 *man/archive.Rd
 ae7968b9e3fc52b3bbc874a3f3bf6af2 *man/archivist-github-integration.Rd
@@ -22,8 +26,8 @@ ae7968b9e3fc52b3bbc874a3f3bf6af2 *man/archivist-github-integration.Rd
 077418f25cd02ee1cac72d75f21e2fa8 *man/deleteGitHubRepo.Rd
 84a8b837271888c97255f198d5a0f029 *man/pushGitHubRepo.Rd
 cf56be5e7886b3fe87a58dbc5b1b03be *vignettes/README.md
-325ad457f7dc31f296e121b0b707817e *vignettes/archivist_and_GitHub_integration.Rmd
-60aa6f81af454bd29e4647ce900578c6 *vignettes/archivist_github.png
+602fd4c55800cced7a8c200881f4f918 *vignettes/archivist_and_GitHub_integration.Rmd
+33fac631205ab33b5d89c41a0f93df83 *vignettes/archivist_github.jpg
 df7a497eac06ec6e4610dbf93cf7a808 *vignettes/archivist_github_workflow.png
 3043d754baccb57496720cfbc3a72ed2 *vignettes/ggsci.css
 68ff7acbf217861f7fa3b572e1da16a9 *vignettes/github_R.jpg

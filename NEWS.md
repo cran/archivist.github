@@ -1,3 +1,11 @@
+# Ver 0.2.2
+
+* Minor updates
+	- `addHooksToPrintGitHub()` archives with names now.
+* Maintaining
+	- VignetteBuilder: knitr added to DESCRIPTION, due to missing vignettes on CRAN
+
+
 # Ver 0.2.1
 
 * Minor updates
