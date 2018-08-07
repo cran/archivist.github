@@ -33,7 +33,7 @@ opts_chunk$set(
 
 # CRAN index
 
-[archivist.github: Tools for Archiving, Managing and Sharing R Objects via GitHub](https://cran.r-project.org/package=archivist.github)
+[archivist.github: Tools for Archiving, Managing and Sharing R Objects via GitHub](https://CRAN.R-project.org/package=archivist.github)
 
 # Installation
 
@@ -44,7 +44,7 @@ install.packages('archivist.github')
 
 # Functionalities
 
-The extension of the ['archivist'](https://pbiecek.github.io/archivist/Posts.html) package integrating the archivist with GitHub via GitHub API, 'git2r' packages and 'httr' package.
+The extension of the ['archivist']https://pbiecek.github.io/archivist/articles/posts.html) package integrating the archivist with GitHub via GitHub API, 'git2r' packages and 'httr' package.
 
 The workflow of extension can be seen below
 

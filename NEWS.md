@@ -1,3 +1,11 @@
+# Ver 0.2.4-0.2.6
+
+- Documentation updates to reflect CRAN canonical URL form and to adopt new blogdown linking protocol.
+
+# Ver 0.2.3
+
+- [Rely on S3 interface of git2r instead of S4](https://github.com/MarcinKosinski/archivist.github/pull/35)
+
 # Ver 0.2.2
 
 * Minor updates
